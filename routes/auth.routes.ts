@@ -1,5 +1,5 @@
 import { Router } from "express";
-const authController = require('../controllers/authController.ts');
+const authController = require('../controllers/authController');
 
 const router = Router();
 

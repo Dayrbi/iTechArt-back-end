@@ -12,7 +12,7 @@ const PORT = config.get('port') || 8080;
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/api', auth);
+app.use('/api/auth', auth);
 app.use('/api/movies', films);
 
 async function Start() {

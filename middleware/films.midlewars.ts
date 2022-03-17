@@ -5,9 +5,9 @@ export interface filmsCollect {
 }
 export interface filmsOneInf {
     production_countries: [{id?: number, name: string}];
-     release_date: string;
-     runtime: number;
-      genres: number[];
-      overview: string,
-      budget: number
+    release_date: string;
+    runtime: number;
+    genres: number[];
+    overview: string;
+    budget: number;
 }
