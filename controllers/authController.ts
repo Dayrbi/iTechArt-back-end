@@ -8,8 +8,8 @@ import {CustomRequest} from '../middleware/auth.middlewars'
 exports.create  = async (req: CustomRequest, res: Response): Promise<void>  => {
   try {
     const { email, password, username } = req.body;
-    const douplicate = await User.findOne({ email });
-    if (douplicate) {
+    const duplicate = await User.findOne({ email });
+    if (duplicate) {
       res.status(400).send('User already exist');
       return;
     }
