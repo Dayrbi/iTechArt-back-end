@@ -1,15 +1,14 @@
 import { Response, Request } from 'express';
 import axios from 'axios';
-import { filmsCollect, filmsOneInf } from '../middleware/films.midlewars';
-
-const config = require('config');
+import config from 'config';
+import { filmsCollect, filmsOneInf, cinemaFilms} from '../middleware/films.midlewars';
 
 exports.getAllFilms = async (req: Request, res: Response): Promise<void> => {
   try {
     const url: string = `${config.get('baseURl')}/popular?api_key=${config.get('apiKey')}`;
     const filmsArr = await axios.get(url);
     if (!filmsArr) {
-      res.status(503).send('Bad request');
+      res.status(503).send('Server Error');
       return;
     }
     const params = filmsArr.data.results.map(({ title, id, poster_path } : filmsCollect) => {
@@ -28,7 +27,7 @@ exports.getOneFilm = async (req: Request, res: Response): Promise<void> => {
     const url: string = `${config.get('baseURl')}/${id}?api_key=${config.get('apiKey')}`;
     const filmInfo = await axios.get(url);
     if (!filmInfo) {
-      res.status(503).send('Bad request');
+      res.status(503).send('Server Error');
       return;
     }
     const paramArr = Array.of(filmInfo.data);
@@ -41,6 +40,21 @@ exports.getOneFilm = async (req: Request, res: Response): Promise<void> => {
       });
     });
     res.status(200).send(params);
+  } catch (e) {
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
+  }
+};
+exports.getCinemaFilm = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const url: string = `${config.get('baseURl')}/now_playing?api_key=${config.get('apiKey')}&region=RU`;
+    const filmsArr = await axios.get(url);
+    if (!filmsArr) {
+      res.status(503).send('Server Error');
+      return;
+    }
+    const dataFilm = filmsArr.data.results.map(({ title, id }: cinemaFilms) => ({ title, id }));
+    res.status(200).send(dataFilm);
   } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);
