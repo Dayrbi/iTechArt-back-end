@@ -12,8 +12,47 @@
         "ecmaVersion": "latest"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "eslint-plugin-import"
     ],
     "rules": {
+        "camelcase": "off",
+        "max-len": ["error", { "code": 120 }],
+        "@typescript-eslint/await-thenable": "error",
+        "@typescript-eslint/dot-notation": "error",
+        "@typescript-eslint/explicit-member-accessibility": [
+            "off",
+            {
+                "accessibility": "explicit"
+            }
+        ],
+        "@typescript-eslint/indent": "off",
+        "@typescript-eslint/member-delimiter-style": [
+            "off",
+            {
+                "multiline": {
+                    "delimiter": "none",
+                    "requireLast": true
+                },
+                "singleline": {
+                    "delimiter": "semi",
+                    "requireLast": false
+                }
+            }
+        ],
+        "@typescript-eslint/member-ordering": "error",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/no-parameter-properties": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-var-requires": "error",
+        "@typescript-eslint/prefer-namespace-keyword": "error",
+        "@typescript-eslint/quotes": "off",
+        "@typescript-eslint/semi": [
+            "off",
+            null
+        ],
+        "@typescript-eslint/type-annotation-spacing": "off",
     }
 }

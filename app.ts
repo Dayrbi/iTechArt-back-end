@@ -4,14 +4,16 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const auth = require('./routes/auth.routes.ts');
+const films = require('./routes/films.routes.ts');
 
 const app = express();
 
 const PORT = config.get('port') || 8080;
-
+app.use(express.json());
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/auth', auth);
+app.use('/api/movies', films);
 
 async function Start() {
   try {
