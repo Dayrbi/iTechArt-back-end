@@ -8,8 +8,8 @@ import {CustomRequest} from '../middleware/auth.middlewars'
 exports.create  = async (req: CustomRequest, res: Response): Promise<void>  => {
   try {
     const { email, password, username } = req.body;
-    const douplicate = await User.findOne({ email });
-    if (douplicate) {
+    const duplicate = await User.findOne({ email });
+    if (duplicate) {
       res.status(400).send('User already exist');
       return;
     }
@@ -57,9 +57,9 @@ exports.authUser = async (req: Request, res: Response): Promise<void> => {
       res.status(401).send('Forbidden');
       return;
     }
-    const token: any = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1];
     const decode = await jwt.verify(token, conf.get('tokenSecret'));
-    const { userId }: any = decode;
+    const { userId } = decode;
     res.status(200).send({ userId });
   } catch (e) {
       const msg = (e as Error).message;
