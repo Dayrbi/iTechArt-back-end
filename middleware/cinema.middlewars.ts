@@ -4,7 +4,7 @@ export interface CinemaReq extends Request {
     title: string;
     address?: string;
 }
-export interface CinemaCollect {
+export interface CinemaData {
     title: string;
     address: string;
 }

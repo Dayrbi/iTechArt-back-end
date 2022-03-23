@@ -1,9 +1,9 @@
-export interface filmsCollect {
+export interface FilmsData {
     id: number;
     title: string;
     poster_path: string;
 }
-export interface filmsOneInf {
+export interface FilmDescription {
     production_countries: [{id?: number, name: string}];
     release_date: string;
     runtime: number;
@@ -11,7 +11,7 @@ export interface filmsOneInf {
     overview: string;
     budget: number;
 }
-export interface cinemaFilms {
+export interface CinemaFilms {
     title: string;
     id: number;
 }
