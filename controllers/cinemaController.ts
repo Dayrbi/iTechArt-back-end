@@ -16,7 +16,7 @@ exports.getAllCinemas = async (req: Request, res: Response): Promise<void> => {
     res.status(500).send(msg);
   }
 };
-exports.createCinemas = async (req: CinemaReq, res: Response): Promise<void> => {
+exports.createCinema = async (req: CinemaReq, res: Response): Promise<void> => {
   try {
     const { title, address } = req.body;
     const duplicate = await Cinema.findOne({ title });
