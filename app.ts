@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const auth = require('./routes/auth.routes.ts');
 const films = require('./routes/films.routes.ts');
+const cinemas = require('./routes/cinemas.routes.ts');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/auth', auth);
 app.use('/api/movies', films);
+app.use('/api/cinemas', cinemas);
 
 async function Start() {
   try {

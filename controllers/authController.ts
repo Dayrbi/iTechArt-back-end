@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import conf from 'config';
 import jwt from 'jsonwebtoken'
 import { User } from '../models/User'
-import {CustomRequest} from '../middleware/auth.middlewars'
+import { CustomRequest } from '../middleware/auth.middlewars'
 
 exports.create  = async (req: CustomRequest, res: Response): Promise<void>  => {
   try {

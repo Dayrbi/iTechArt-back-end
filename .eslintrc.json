@@ -53,6 +53,7 @@
             "off",
             null
         ],
-        "@typescript-eslint/type-annotation-spacing": "off",
+        "@typescript-eslint/type-annotation-spacing": "off"
+
     }
 }

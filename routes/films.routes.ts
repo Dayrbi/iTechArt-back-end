@@ -4,6 +4,7 @@ const filmsController = require('../controllers/filmController.ts');
 
 const router = Router();
 
-router.get('/allFilms', filmsController.getAllFilms);
-router.get('/filmInfo', filmsController.getOneFilm);
+router.get('/getAllFilms', filmsController.getAllFilms);
+router.get('/getFilm', filmsController.getOneFilm);
+router.get('/getFilmsForCinema', filmsController.getFilmsForCinema);
 module.exports = router;
