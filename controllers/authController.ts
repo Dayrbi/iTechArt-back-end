@@ -1,11 +1,11 @@
 import { Response, Request } from 'express';
 import bcrypt from 'bcrypt';
 import conf from 'config';
-import jwt from 'jsonwebtoken'
-import { User } from '../models/User'
-import { CustomRequest } from '../middleware/auth.middlewars'
+import jwt from 'jsonwebtoken';
+import { User } from '../models/User';
+import { CustomRequest } from '../middleware/auth.middlewars';
 
-exports.create  = async (req: CustomRequest, res: Response): Promise<void>  => {
+export const createUser = async (req: CustomRequest, res: Response): Promise<void> => {
   try {
     const { email, password, username } = req.body;
     const duplicate = await User.findOne({ email });
@@ -23,11 +23,11 @@ exports.create  = async (req: CustomRequest, res: Response): Promise<void>  => {
     );
     res.status(201).send({ token });
   } catch (e) {
-      const msg = (e as Error).message;
-      res.status(500).send(msg);
-    }
-  };
-exports.login = async (req: CustomRequest, res: Response): Promise<void> => {
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
+  }
+};
+export const userLogin = async (req: CustomRequest, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -46,12 +46,12 @@ exports.login = async (req: CustomRequest, res: Response): Promise<void> => {
       { expiresIn: '1h' },
     );
     res.send({ token });
-   } catch (e) {
+  } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);
   }
 };
-exports.authUser = async (req: Request, res: Response): Promise<void> => {
+export const authUser = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.headers.authorization && req.headers.authorization?.split(' ')[0] === 'Bearer') {
       res.status(401).send('Forbidden');
@@ -62,7 +62,7 @@ exports.authUser = async (req: Request, res: Response): Promise<void> => {
     const { userId } = decode;
     res.status(200).send({ userId });
   } catch (e) {
-      const msg = (e as Error).message;
-      res.status(500).send(msg);
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
   }
 };

@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from 'config';
 import { FilmsData, FilmDescription, CinemaFilms } from '../middleware/films.midlewars';
 
-exports.getAllFilms = async (req: Request, res: Response): Promise<void> => {
+export const getAllFilms = async (req: Request, res: Response): Promise<void> => {
   try {
     const url: string = `${config.get('baseURl')}/popular?api_key=${config.get('apiKey')}`;
     const filmsArr = await axios.get(url);
@@ -21,7 +21,7 @@ exports.getAllFilms = async (req: Request, res: Response): Promise<void> => {
     res.status(500).send(msg);
   }
 };
-exports.getOneFilm = async (req: Request, res: Response): Promise<void> => {
+export const getOneFilm = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.query;
     const url: string = `${config.get('baseURl')}/${id}?api_key=${config.get('apiKey')}`;
@@ -45,7 +45,7 @@ exports.getOneFilm = async (req: Request, res: Response): Promise<void> => {
     res.status(500).send(msg);
   }
 };
-exports.getFilmsForCinema = async (req: Request, res: Response): Promise<void> => {
+export const getFilmsForCinema = async (req: Request, res: Response): Promise<void> => {
   try {
     const url: string = `${config.get('baseURl')}/now_playing?api_key=${config.get('apiKey')}&region=PL`;
     const filmsArr = await axios.get(url);
