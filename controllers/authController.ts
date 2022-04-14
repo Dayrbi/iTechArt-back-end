@@ -17,7 +17,7 @@ export const createUser = async (req: CustomRequest, res: Response): Promise<voi
     const user = new User({ email, username, password: hashedPassword });
     await user.save();
     const token = await jwt.sign(
-      { userId: user.id },
+      { userId: user.id, username: user.username },
       conf.get('tokenSecret'),
       { expiresIn: '1h' },
     );
@@ -41,7 +41,7 @@ export const userLogin = async (req: CustomRequest, res: Response): Promise<void
       return;
     }
     const token = await jwt.sign(
-      { userId: user.id },
+      { userId: user.id, username: user.username },
       conf.get('tokenSecret'),
       { expiresIn: '1h' },
     );
@@ -59,8 +59,8 @@ export const authUser = async (req: Request, res: Response): Promise<void> => {
     }
     const token = req.headers.authorization?.split(' ')[1];
     const decode = await jwt.verify(token, conf.get('tokenSecret'));
-    const { userId } = decode;
-    res.status(200).send({ userId });
+    const { userId, username } = decode;
+    res.status(200).send({ userId, username });
   } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);

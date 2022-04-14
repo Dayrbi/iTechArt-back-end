@@ -32,11 +32,12 @@ export const getOneFilm = async (req: Request, res: Response): Promise<void> => 
     }
     const paramArr = Array.of(filmInfo.data);
     const params = paramArr.map(({
-      production_countries, release_date, runtime, genres, overview, budget,
+      production_countries, release_date, runtime, genres, overview, budget, title, poster_path,
     } : FilmDescription) => {
       const countryName: string = production_countries[0].name;
+      const img: string = `https://www.themoviedb.org/t/p/w600_and_h900_face/${poster_path}`;
       return ({
-        countryName, release_date, runtime, genres, overview, budget,
+        countryName, release_date, runtime, genres, overview, budget, title, img,
       });
     });
     res.status(200).send(params);

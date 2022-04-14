@@ -32,7 +32,7 @@ export const createCinema = async (req: CinemaReq, res: Response): Promise<void>
     res.status(500).send(msg);
   }
 };
-export const getCinemasCity = async (req: Request, res: Response): Promise<void> => {
+export const getCinemasByCity = async (req: Request, res: Response): Promise<void> => {
   try {
     const { city } = req.query;
     const cinemas = await Cinema.find({ city }).populate('sessions');
@@ -46,7 +46,7 @@ export const getCinemasCity = async (req: Request, res: Response): Promise<void>
     res.status(500).send(msg);
   }
 };
-export const getCinemasName = async (req: Request, res: Response): Promise<void> => {
+export const getCinemaByName = async (req: Request, res: Response): Promise<void> => {
   try {
     const { title } = req.query;
     const cinema = await Cinema.findOne({ title }).populate('sessions');
