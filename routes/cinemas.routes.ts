@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import {
-  createCinema, getAllCinemas, getCinemasCity, getCinemasName,
+  createCinema, getAllCinemas, getCinemasByCity, getCinemaByName,
 } from '../controllers/cinemaController';
 
 export const cinemasRouter = Router();
 
 cinemasRouter.get('/getAllCinemas', getAllCinemas);
-cinemasRouter.get('/getCinemasCity', getCinemasCity);
-cinemasRouter.get('/getCinemasName', getCinemasName);
+cinemasRouter.get('/getCinemasCity', getCinemasByCity);
+cinemasRouter.get('/getCinemasName', getCinemaByName);
 cinemasRouter.post('/createCinema', createCinema);
