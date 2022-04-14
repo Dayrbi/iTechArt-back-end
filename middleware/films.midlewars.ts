@@ -1,4 +1,3 @@
-
 export interface FilmsData {
     id: number;
     title: string;
@@ -11,6 +10,8 @@ export interface FilmDescription {
     genres: number[];
     overview: string;
     budget: number;
+    title: string;
+    poster_path: string;
 }
 export interface CinemaFilms {
     title: string;

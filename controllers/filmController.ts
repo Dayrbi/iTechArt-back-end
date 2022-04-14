@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from 'config';
 import { FilmsData, FilmDescription, CinemaFilms } from '../middleware/films.midlewars';
 
-exports.getAllFilms = async (req: Request, res: Response): Promise<void> => {
+export const getAllFilms = async (req: Request, res: Response): Promise<void> => {
   try {
     const url: string = `${config.get('baseURl')}/popular?api_key=${config.get('apiKey')}`;
     const filmsArr = await axios.get(url);
@@ -21,7 +21,7 @@ exports.getAllFilms = async (req: Request, res: Response): Promise<void> => {
     res.status(500).send(msg);
   }
 };
-exports.getOneFilm = async (req: Request, res: Response): Promise<void> => {
+export const getOneFilm = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.query;
     const url: string = `${config.get('baseURl')}/${id}?api_key=${config.get('apiKey')}`;
@@ -32,11 +32,12 @@ exports.getOneFilm = async (req: Request, res: Response): Promise<void> => {
     }
     const paramArr = Array.of(filmInfo.data);
     const params = paramArr.map(({
-      production_countries, release_date, runtime, genres, overview, budget,
+      production_countries, release_date, runtime, genres, overview, budget, title, poster_path,
     } : FilmDescription) => {
       const countryName: string = production_countries[0].name;
+      const img: string = `https://www.themoviedb.org/t/p/w600_and_h900_face/${poster_path}`;
       return ({
-        countryName, release_date, runtime, genres, overview, budget,
+        countryName, release_date, runtime, genres, overview, budget, title, img,
       });
     });
     res.status(200).send(params);
@@ -45,7 +46,7 @@ exports.getOneFilm = async (req: Request, res: Response): Promise<void> => {
     res.status(500).send(msg);
   }
 };
-exports.getFilmsForCinema = async (req: Request, res: Response): Promise<void> => {
+export const getFilmsForCinema = async (req: Request, res: Response): Promise<void> => {
   try {
     const url: string = `${config.get('baseURl')}/now_playing?api_key=${config.get('apiKey')}&region=PL`;
     const filmsArr = await axios.get(url);

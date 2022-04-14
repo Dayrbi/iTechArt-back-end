@@ -1,10 +1,8 @@
 import { Router } from 'express';
+import { getAllFilms, getOneFilm, getFilmsForCinema } from '../controllers/filmController';
 
-const filmsController = require('../controllers/filmController.ts');
+export const filmsRouter = Router();
 
-const router = Router();
-
-router.get('/getAllFilms', filmsController.getAllFilms);
-router.get('/getFilm', filmsController.getOneFilm);
-router.get('/getFilmsForCinema', filmsController.getFilmsForCinema);
-module.exports = router;
+filmsRouter.get('/getAllFilms', getAllFilms);
+filmsRouter.get('/getFilm', getOneFilm);
+filmsRouter.get('/getFilmsForCinema', getFilmsForCinema);

@@ -1,11 +1,12 @@
-const express = require('express');
-const config = require('config');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const auth = require('./routes/auth.routes.ts');
-const films = require('./routes/films.routes.ts');
-const cinemas = require('./routes/cinemas.routes.ts');
+import express from 'express';
+import config from 'config';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { authRouter } from './routes/auth.routes';
+import { filmsRouter } from './routes/films.routes';
+import { cinemasRouter } from './routes/cinemas.routes';
+import { sessionsRouter } from './routes/session.routes';
 
 const app = express();
 
@@ -13,16 +14,14 @@ const PORT = config.get('port') || 8080;
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/api/auth', auth);
-app.use('/api/movies', films);
-app.use('/api/cinemas', cinemas);
+app.use('/api/auth', authRouter);
+app.use('/api/movies', filmsRouter);
+app.use('/api/cinemas', cinemasRouter);
+app.use('/api/sessions', sessionsRouter);
 
 async function Start() {
   try {
-    await mongoose.connect(config.get('mongoUrl'), {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(config.get('mongoUrl'));
     app.listen(PORT, () => {
       console.log(`Server has been started on port ${PORT}...`);
     });

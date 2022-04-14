@@ -18,8 +18,12 @@
     "rules": {
         "camelcase": "off",
         "max-len": ["error", { "code": 120 }],
-        "@typescript-eslint/await-thenable": "error",
-        "@typescript-eslint/dot-notation": "error",
+        "import/no-import-module-exports": "off",
+        "import/prefer-default-export": "off",
+        "import/no-unresolved": "off",
+        "import/extensions": "off",
+        "@typescript-eslint/await-thenable": "off",
+        "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/explicit-member-accessibility": [
             "off",
             {
@@ -46,7 +50,7 @@
         "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-parameter-properties": "off",
         "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/no-var-requires": "error",
+        "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/prefer-namespace-keyword": "error",
         "@typescript-eslint/quotes": "off",
         "@typescript-eslint/semi": [
@@ -54,6 +58,5 @@
             null
         ],
         "@typescript-eslint/type-annotation-spacing": "off"
-
     }
 }

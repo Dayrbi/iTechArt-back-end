@@ -1,7 +1,11 @@
-const Router = require('express');
-const cinemaController = require('../controllers/cinemaController.ts');
+import { Router } from 'express';
+import {
+  createCinema, getAllCinemas, getCinemasByCity, getCinemaByName,
+} from '../controllers/cinemaController';
 
-const router = Router();
-router.get('/getAllCinemas', cinemaController.getAllCinemas);
-router.post('/createCinema', cinemaController.createCinema);
-module.exports = router;
+export const cinemasRouter = Router();
+
+cinemasRouter.get('/getAllCinemas', getAllCinemas);
+cinemasRouter.get('/getCinemasCity', getCinemasByCity);
+cinemasRouter.get('/getCinemasName', getCinemaByName);
+cinemasRouter.post('/createCinema', createCinema);
