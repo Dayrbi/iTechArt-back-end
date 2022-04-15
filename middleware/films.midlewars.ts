@@ -12,6 +12,7 @@ export interface FilmDescription {
     budget: number;
     title: string;
     poster_path: string;
+    actors: string[];
 }
 export interface CinemaFilms {
     title: string;

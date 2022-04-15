@@ -8,5 +8,6 @@ export interface CinemaReq extends Request {
 export interface CinemaData {
     title: string;
     address: string;
-    sessions: Array<object>
+    sessions: Array<object>;
+    date?: string[];
 }

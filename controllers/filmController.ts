@@ -25,19 +25,23 @@ export const getOneFilm = async (req: Request, res: Response): Promise<void> => 
   try {
     const { id } = req.query;
     const url: string = `${config.get('baseURl')}/${id}?api_key=${config.get('apiKey')}`;
+    const urlForActors: string = `${config.get('baseURl')}/${id}/credits?api_key=${config.get('apiKey')}`;
     const filmInfo = await axios.get(url);
-    if (!filmInfo) {
+    const filmActors = await axios.get(urlForActors);
+    if (!filmInfo && filmActors) {
       res.status(503).send('Server Error');
       return;
     }
+    const actorsArr = filmActors.data.cast.map((actor: {name: string}) => (actor.name)).slice(0, 4);
     const paramArr = Array.of(filmInfo.data);
     const params = paramArr.map(({
       production_countries, release_date, runtime, genres, overview, budget, title, poster_path,
     } : FilmDescription) => {
       const countryName: string = production_countries[0].name;
       const img: string = `https://www.themoviedb.org/t/p/w600_and_h900_face/${poster_path}`;
+      const actors: string[] = actorsArr;
       return ({
-        countryName, release_date, runtime, genres, overview, budget, title, img,
+        countryName, release_date, runtime, genres, overview, budget, title, img, actors,
       });
     });
     res.status(200).send(params);

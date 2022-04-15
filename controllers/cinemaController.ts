@@ -9,7 +9,14 @@ export const getAllCinemas = async (req: Request, res: Response): Promise<void> 
       res.status(400).send('There are no cinemas');
       return;
     }
-    const data = cinemas.map(({ title, address, sessions }: CinemaData) => ({ title, address, sessions }));
+    let dateArr: string[] = [];
+    for (let i = 0; i < cinemas.length; i++) {
+      dateArr = cinemas[i].sessions.map(((session:{date: string}) => session.date));
+    }
+    const { date } = { date: [...new Set(dateArr)] };
+    const data: Array<CinemaData> = cinemas.map(({ title, address, sessions }) => ({
+      title, address, sessions, date,
+    }));
     res.status(200).send(data);
   } catch (e) {
     const msg = (e as Error).message;
