@@ -1,7 +1,8 @@
 export interface FilmsData {
     id: number;
-    title: string;
+    title: boolean;
     poster_path: string;
+    vote_average?: number[];
 }
 export interface FilmDescription {
     production_countries: [{id?: number, name: string}];

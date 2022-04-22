@@ -10,4 +10,15 @@ export interface CinemaData {
     address: string;
     sessions: Array<object>;
     date?: string[];
+    city: string;
+}
+export interface SearchData {
+    title?: string;
+    date?: string;
+    city?: string;
+}
+export interface SearchReqData {
+    theatre?: string;
+    cityParam?: string;
+    dateParam?: any;
 }

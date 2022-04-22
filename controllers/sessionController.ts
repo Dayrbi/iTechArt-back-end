@@ -34,7 +34,9 @@ export const getFilmSessions = async (req: Request, res: Response) => {
       res.status(400).send('Sessions doesn\'t exist');
       return;
     }
-    res.status(200).send(sessions);
+    const dateArr:string[] = sessions.map((session) => session.date.toString());
+    const date: string[] = [...new Set(dateArr)];
+    res.status(200).send({ sessions, date });
   } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);

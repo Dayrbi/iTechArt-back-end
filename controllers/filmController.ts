@@ -58,8 +58,31 @@ export const getFilmsForCinema = async (req: Request, res: Response): Promise<vo
       res.status(503).send('Server Error');
       return;
     }
-    const dataFilm = filmsArr.data.results.map(({ title, id }: CinemaFilms) => ({ title, id }));
-    res.status(200).send(dataFilm);
+    const filmData = filmsArr.data.results.map(({ title, id }: CinemaFilms) => ({ title, id }));
+    res.status(200).send(filmData);
+  } catch (e) {
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
+  }
+};
+export const getFilmsBySearch = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { filmName } = req.query;
+    const url: string = `https://api.themoviedb.org/3/search/movie?api_key=${config.get('apiKey')}&query=${filmName}`;
+    const filmsArr = await axios.get(url);
+    if (!filmsArr) {
+      res.status(503).send('Server Error');
+      return;
+    }
+    const filmData = filmsArr.data.results.map(({
+      title, id, poster_path, vote_average,
+    } : FilmsData) => {
+      const img: string = `https://www.themoviedb.org/t/p/w220_and_h330_face/${poster_path}`;
+      return ({
+        title, id, img, vote_average,
+      });
+    });
+    res.status(200).send(filmData);
   } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);
