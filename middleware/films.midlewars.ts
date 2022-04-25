@@ -19,3 +19,7 @@ export interface CinemaFilms {
     title: string;
     id: number;
 }
+export interface FilmCheckout {
+    title: string,
+    poster_path: string;
+}

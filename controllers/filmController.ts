@@ -1,7 +1,9 @@
 import { Response, Request } from 'express';
 import axios from 'axios';
 import config from 'config';
-import { FilmsData, FilmDescription, CinemaFilms } from '../middleware/films.midlewars';
+import {
+  FilmsData, FilmDescription, CinemaFilms, FilmCheckout,
+} from '../middleware/films.midlewars';
 
 export const getAllFilms = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -81,6 +83,26 @@ export const getFilmsBySearch = async (req: Request, res: Response): Promise<voi
       return ({
         title, id, img, vote_average,
       });
+    });
+    res.status(200).send(filmData);
+  } catch (e) {
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
+  }
+};
+export const getFilmForCheckout = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.query;
+    const url: string = `${config.get('baseURl')}/${id}?api_key=${config.get('apiKey')}`;
+    const filmInfo = await axios.get(url);
+    if (!filmInfo) {
+      res.status(503).send('Server Error');
+      return;
+    }
+    const paramsArr = Array.of(filmInfo.data);
+    const filmData = paramsArr.map(({ title, poster_path }: FilmCheckout) => {
+      const img: string = `https://image.tmdb.org/t/p/w138_and_h175_face/${poster_path}`;
+      return ({ title, img });
     });
     res.status(200).send(filmData);
   } catch (e) {

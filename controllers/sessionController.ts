@@ -42,3 +42,17 @@ export const getFilmSessions = async (req: Request, res: Response) => {
     res.status(500).send(msg);
   }
 };
+export const getSessionInfo = async (req: Request, res: Response) => {
+  try {
+    const { _id } = req.query;
+    const session = await Session.find({ _id }).populate('cinemaId');
+    if (!session) {
+      res.status(400).send('There are no cinemas');
+      return;
+    }
+    res.status(200).send(session);
+  } catch (e) {
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
+  }
+};

@@ -49,7 +49,6 @@ export const getCinemasByFilter = async (req: Request, res: Response): Promise<v
     const result: Array<CinemaData> = [];
     const searchParam: SearchData = {};
     const { theatre, cityParam, dateParam }: SearchReqData = req.query;
-    console.log(dateParam);
     if (theatre) searchParam.title = theatre;
     if (cityParam) searchParam.city = cityParam;
     const cinemas = await Cinema.find(searchParam).populate('sessions');
@@ -66,7 +65,6 @@ export const getCinemasByFilter = async (req: Request, res: Response): Promise<v
       cinemas.filter((cinema) => {
         cinema.sessions = cinema.sessions.filter((session: {date: string}) => moment(session.date).format('L') === moment(dateParam).format('L'));
         if (cinema.sessions.length) {
-          console.log(cinema.date);
           result.push(cinema);
         }
       });
