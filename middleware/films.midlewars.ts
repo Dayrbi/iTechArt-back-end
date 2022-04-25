@@ -1,6 +1,6 @@
 export interface FilmsData {
     id: number;
-    title: boolean;
+    title: string;
     poster_path: string;
     vote_average?: number[];
 }

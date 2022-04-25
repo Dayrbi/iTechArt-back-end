@@ -57,8 +57,8 @@ export const authUser = async (req: Request, res: Response): Promise<void> => {
       res.status(401).send('Forbidden');
       return;
     }
-    const token: any = req.headers.authorization?.split(' ')[1];
-    const decode: any = await jwt.verify(token, conf.get('tokenSecret'));
+    const token = req.headers.authorization?.split(' ')[1];
+    const decode = await jwt.verify(token, conf.get('tokenSecret'));
     const { userId, username } = decode;
     res.status(200).send({ userId, username });
   } catch (e) {
