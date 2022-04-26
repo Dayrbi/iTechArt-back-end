@@ -48,8 +48,8 @@ export const getCinemasByFilter = async (req: Request, res: Response): Promise<v
   try {
     const result: Array<CinemaData> = [];
     const searchParam: SearchData = {};
-    const { theatre, cityParam, dateParam }: SearchReqData = req.query;
-    if (theatre) searchParam.title = theatre;
+    const { theatreParam, cityParam, dateParam }: SearchReqData = req.query;
+    if (theatreParam) searchParam.title = theatreParam;
     if (cityParam) searchParam.city = cityParam;
     const cinemas = await Cinema.find(searchParam).populate('sessions');
     if (!cinemas) {

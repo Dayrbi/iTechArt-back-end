@@ -18,7 +18,7 @@ export interface SearchData {
     city?: string;
 }
 export interface SearchReqData {
-    theatre?: string;
+    theatreParam?: string;
     cityParam?: string;
     dateParam?: any;
 }

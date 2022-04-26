@@ -90,7 +90,7 @@ export const getFilmsBySearch = async (req: Request, res: Response): Promise<voi
     res.status(500).send(msg);
   }
 };
-export const getFilmForCheckout = async (req: Request, res: Response) => {
+export const getFilmInfoForCheckout = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
     const url: string = `${config.get('baseURl')}/${id}?api_key=${config.get('apiKey')}`;
