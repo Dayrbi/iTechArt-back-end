@@ -1,5 +1,8 @@
 import { Response, Request } from 'express';
-import { CinemaReq, CinemaData } from '../middleware/cinema.middlewars';
+import moment from 'moment-timezone';
+import {
+  CinemaReq, CinemaData, SearchData, SearchReqData,
+} from '../middleware/cinema.middlewars';
 import { Cinema } from '../models/Cinema';
 
 export const getAllCinemas = async (req: Request, res: Response): Promise<void> => {
@@ -9,7 +12,16 @@ export const getAllCinemas = async (req: Request, res: Response): Promise<void> 
       res.status(400).send('There are no cinemas');
       return;
     }
-    const data = cinemas.map(({ title, address, sessions }: CinemaData) => ({ title, address, sessions }));
+    let dateArr: string[] = [];
+    for (let i = 0; i < cinemas.length; i++) {
+      dateArr = cinemas[i].sessions.map(((session:{date: string}) => moment(session.date).format()));
+    }
+    const { date } = { date: [...new Set(dateArr)] };
+    const data: Array<CinemaData> = cinemas.map(({
+      title, address, sessions, city,
+    }) => ({
+      title, address, sessions, date, city,
+    }));
     res.status(200).send(data);
   } catch (e) {
     const msg = (e as Error).message;
@@ -32,29 +44,58 @@ export const createCinema = async (req: CinemaReq, res: Response): Promise<void>
     res.status(500).send(msg);
   }
 };
-export const getCinemasByCity = async (req: Request, res: Response): Promise<void> => {
+export const getCinemasByFilter = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { city } = req.query;
-    const cinemas = await Cinema.find({ city }).populate('sessions');
+    const result: Array<CinemaData> = [];
+    const searchParam: SearchData = {};
+    const { theatreParam, cityParam, dateParam }: SearchReqData = req.query;
+    if (theatreParam) searchParam.title = theatreParam;
+    if (cityParam) searchParam.city = cityParam;
+    const cinemas = await Cinema.find(searchParam).populate('sessions');
     if (!cinemas) {
-      res.status(400).send('There are no cinemas in this city');
+      res.status(400).send('There are no cinemas by search criterias');
       return;
     }
-    res.status(200).send(cinemas);
+    let dateArr: string[] = [];
+    for (let i = 0; i < cinemas.length; i++) {
+      dateArr = cinemas[i].sessions.map(((session:{date: string}) => moment(session.date).format()));
+    }
+    const { date } = { date: [...new Set(dateArr)].sort() };
+    if (dateParam) {
+      cinemas.filter((cinema) => {
+        cinema.sessions = cinema.sessions.filter((session: {date: string}) => moment(session.date).format('L') === moment(dateParam).format('L'));
+        if (cinema.sessions.length) {
+          result.push(cinema);
+        }
+      });
+      const filterData: Array<CinemaData> = result.map(({
+        title, address, sessions, city,
+      }) => ({
+        title, address, sessions, date, city,
+      }));
+      res.status(200).send(filterData);
+      return;
+    }
+    const data: Array<CinemaData> = cinemas.map(({
+      title, address, sessions, city,
+    }) => ({
+      title, address, sessions, date, city,
+    }));
+    res.status(200).send(data);
   } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);
   }
 };
-export const getCinemaByName = async (req: Request, res: Response): Promise<void> => {
+export const getFilterParams = async (req: Request, res: Response) => {
   try {
-    const { title } = req.query;
-    const cinema = await Cinema.findOne({ title }).populate('sessions');
-    if (!cinema) {
-      res.status(400).send('There is no cinema');
+    const cinemas = await Cinema.find({});
+    if (!cinemas) {
+      res.status(400).send('There are no cinemas');
       return;
     }
-    res.status(200).send(cinema);
+    const params = cinemas.map((cinema) => ({ title: cinema.title, city: cinema.city }));
+    res.status(200).send(params);
   } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);
