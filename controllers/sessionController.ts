@@ -3,11 +3,11 @@ import { SessionReq } from '../middleware/session.middlewars';
 import { Cinema } from '../models/Cinema';
 import { Session } from '../models/Session';
 
-export const createSession = async (req: SessionReq, res: Response): Promise<void> => {
+export const createSession = async (req: Request, res: Response): Promise<void> => {
   try {
     const {
       filmName, filmGenres, filmCountryName, filmId, date, time, price, food, cinemaName,
-    } = req.body;
+    }: SessionReq = req.body;
     const session = await Session.create({
       filmName, filmGenres, filmCountryName, filmId, date, time, price, food,
     });

@@ -12,11 +12,12 @@ export const getAllCinemas = async (req: Request, res: Response): Promise<void> 
       res.status(400).send('There are no cinemas');
       return;
     }
-    let dateArr: string[] = [];
+    const dateArr: string[] = [];
     for (let i = 0; i < cinemas.length; i++) {
-      dateArr = cinemas[i].sessions.map(((session:{date: string}) => moment(session.date).format()));
+      const date = cinemas[i].sessions.map(((session:{date: string}) => moment(session.date).format()));
+      dateArr.push(...date);
     }
-    const { date } = { date: [...new Set(dateArr)] };
+    const { date } = { date: [...new Set(dateArr)].sort() };
     const data: Array<CinemaData> = cinemas.map(({
       title, address, sessions, city,
     }) => ({
@@ -56,9 +57,10 @@ export const getCinemasByFilter = async (req: Request, res: Response): Promise<v
       res.status(400).send('There are no cinemas by search criterias');
       return;
     }
-    let dateArr: string[] = [];
+    const dateArr: string[] = [];
     for (let i = 0; i < cinemas.length; i++) {
-      dateArr = cinemas[i].sessions.map(((session:{date: string}) => moment(session.date).format()));
+      const date = cinemas[i].sessions.map(((session:{date: string}) => moment(session.date).format()));
+      dateArr.push(...date);
     }
     const { date } = { date: [...new Set(dateArr)].sort() };
     if (dateParam) {
@@ -71,7 +73,7 @@ export const getCinemasByFilter = async (req: Request, res: Response): Promise<v
       const filterData: Array<CinemaData> = result.map(({
         title, address, sessions, city,
       }) => ({
-        title, address, sessions, date, city,
+        title, address, sessions, date: [dateParam], city,
       }));
       res.status(200).send(filterData);
       return;
@@ -96,6 +98,22 @@ export const getFilterParams = async (req: Request, res: Response) => {
     }
     const params = cinemas.map((cinema) => ({ title: cinema.title, city: cinema.city }));
     res.status(200).send(params);
+  } catch (e) {
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
+  }
+};
+export const updateCinemaHall = async (req: Request, res: Response) => {
+  try {
+    const { id, cinemaHall } = req.body;
+    const cinema = await Cinema.findOne({ _id: id });
+    if (!cinema) {
+      res.status(400).send('There are no cinemas');
+      return;
+    }
+    await Cinema.updateOne({ _id: id }, { cinemaHall });
+    await cinema.save();
+    res.status(200).send('Cinema hall was updated');
   } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);
