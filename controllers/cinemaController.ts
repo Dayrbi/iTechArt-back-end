@@ -103,19 +103,3 @@ export const getFilterParams = async (req: Request, res: Response) => {
     res.status(500).send(msg);
   }
 };
-export const updateCinemaHall = async (req: Request, res: Response) => {
-  try {
-    const { id, cinemaHall } = req.body;
-    const cinema = await Cinema.findOne({ _id: id });
-    if (!cinema) {
-      res.status(400).send('There are no cinemas');
-      return;
-    }
-    await Cinema.updateOne({ _id: id }, { cinemaHall });
-    await cinema.save();
-    res.status(200).send('Cinema hall was updated');
-  } catch (e) {
-    const msg = (e as Error).message;
-    res.status(500).send(msg);
-  }
-};

@@ -5,6 +5,5 @@ const cinemasSchema = new Schema({
   address: { type: String, required: true },
   sessions: [{ type: Schema.Types.ObjectId, ref: 'Session' }],
   city: { type: String, required: true },
-  cinemaHall: { type: Array, required: false },
 });
 export const Cinema = model('Cinema', cinemasSchema);

@@ -11,5 +11,6 @@ const sessionSchema = new Schema({
   food: { type: Array, required: false },
   cinemaId: [{ type: Schema.Types.ObjectId, ref: 'Cinema' }],
   cinemaName: { type: String, required: false },
+  cinemaHall: { type: Array, required: false },
 });
 export const Session = model('Session', sessionSchema);

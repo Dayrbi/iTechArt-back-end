@@ -8,14 +8,14 @@ export const createOrder = async (req: Request, res: Response) => {
     const {
       placeArr, foodArr, filmId, amount, time, date, cinemaName, city, imgSrc, filmTitle, userId,
     }:OrderCreateReq = req.body;
-    const order = await Order.create({
-      placeArr, foodArr, filmId, amount, time, date, cinemaName, city, imgSrc, filmTitle,
-    });
     const user = await User.findOne({ _id: userId });
     if (!user) {
       res.status(400).send('User doesn\'t exist');
       return;
     }
+    const order = await Order.create({
+      placeArr, foodArr, filmId, amount, time, date, cinemaName, city, imgSrc, filmTitle,
+    });
     order.userId.push(userId);
     user.orders.push(order._id);
     await order.save();
