@@ -10,6 +10,6 @@ export interface OrderCreateReq extends Request {
     date: string;
     cinemaName: string;
     city: string;
-    imgSrc: string;
+    orderFilmImg: string;
     userId: number;
 }

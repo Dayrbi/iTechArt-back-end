@@ -6,7 +6,7 @@ import { User } from '../models/User';
 export const createOrder = async (req: Request, res: Response) => {
   try {
     const {
-      placeArr, foodArr, filmId, amount, time, date, cinemaName, city, imgSrc, filmTitle, userId,
+      placeArr, foodArr, filmId, amount, time, date, cinemaName, city, orderFilmImg, filmTitle, userId,
     }:OrderCreateReq = req.body;
     const user = await User.findOne({ _id: userId });
     if (!user) {
@@ -14,7 +14,7 @@ export const createOrder = async (req: Request, res: Response) => {
       return;
     }
     const order = await Order.create({
-      placeArr, foodArr, filmId, amount, time, date, cinemaName, city, imgSrc, filmTitle,
+      placeArr, foodArr, filmId, amount, time, date, cinemaName, city, imgSrc: orderFilmImg, filmTitle,
     });
     order.userId.push(userId);
     user.orders.push(order._id);
