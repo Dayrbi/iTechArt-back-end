@@ -41,7 +41,6 @@ export const getOneOrder = async (req: Request, res: Response): Promise<void> =>
     const { poster_path }: {poster_path: string} = filmInfo.data;
     const img: string = `https://www.themoviedb.org/t/p/w600_and_h900_face${poster_path}`;
     order.imgSrc = img;
-    console.log(order.imgSrc);
     res.status(200).send([order]);
   } catch (e) {
     const msg = (e as Error).message;
