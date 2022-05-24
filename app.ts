@@ -7,6 +7,7 @@ import { authRouter } from './routes/auth.routes';
 import { filmsRouter } from './routes/films.routes';
 import { cinemasRouter } from './routes/cinemas.routes';
 import { sessionsRouter } from './routes/session.routes';
+import { ordersRouter } from './routes/orders.routes';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/movies', filmsRouter);
 app.use('/api/cinemas', cinemasRouter);
 app.use('/api/sessions', sessionsRouter);
+app.use('/api/orders', ordersRouter);
 
 async function Start() {
   try {

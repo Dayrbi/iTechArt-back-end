@@ -2,8 +2,9 @@ import { Response, Request } from 'express';
 import axios from 'axios';
 import config from 'config';
 import {
-  FilmsData, FilmDescription, CinemaFilms, FilmCheckout,
+  FilmsData, FilmDescription, CinemaFilms, FilmInfoForCheckout,
 } from '../middleware/films.midlewars';
+import { Session } from '../models/Session';
 
 export const getAllFilms = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -93,14 +94,15 @@ export const getFilmsBySearch = async (req: Request, res: Response): Promise<voi
 export const getFilmInfoForCheckout = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
-    const url: string = `${config.get('baseURl')}/${id}?api_key=${config.get('apiKey')}`;
+    const [session] = await Session.find({ _id: id });
+    const url: string = `${config.get('baseURl')}/${session.filmId}?api_key=${config.get('apiKey')}`;
     const filmInfo = await axios.get(url);
     if (!filmInfo) {
       res.status(503).send('Server Error');
       return;
     }
     const paramsArr = Array.of(filmInfo.data);
-    const filmData = paramsArr.map(({ title, poster_path }: FilmCheckout) => {
+    const filmData = paramsArr.map(({ title, poster_path }: FilmInfoForCheckout) => {
       const img: string = `https://image.tmdb.org/t/p/w138_and_h175_face/${poster_path}`;
       return ({ title, img });
     });

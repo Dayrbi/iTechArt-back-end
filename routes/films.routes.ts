@@ -9,4 +9,4 @@ filmsRouter.get('/getAllFilms', getAllFilms);
 filmsRouter.get('/getFilm', getOneFilm);
 filmsRouter.get('/getFilmsForCinema', getFilmsForCinema);
 filmsRouter.get('/getFilmsBySearch', getFilmsBySearch);
-filmsRouter.get('/getFilmForCheckout', getFilmInfoForCheckout);
+filmsRouter.get('/getFilmInfoForCheckout', getFilmInfoForCheckout);

@@ -10,4 +10,5 @@ export interface SessionReq extends Request {
     price: number;
     food: string[];
     cinemaName: string;
+    cinemaHall: string[];
 }

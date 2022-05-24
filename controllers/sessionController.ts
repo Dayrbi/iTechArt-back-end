@@ -3,13 +3,14 @@ import { SessionReq } from '../middleware/session.middlewars';
 import { Cinema } from '../models/Cinema';
 import { Session } from '../models/Session';
 
-export const createSession = async (req: SessionReq, res: Response): Promise<void> => {
+export const createSession = async (req: Request, res: Response): Promise<void> => {
   try {
     const {
-      filmName, filmGenres, filmCountryName, filmId, date, time, price, food, cinemaName,
-    } = req.body;
+      filmName, filmGenres, filmCountryName, filmId, date, time, price, food, cinemaName, cinemaHall,
+    }: SessionReq = req.body;
+    const cinemaHallArr = time.map((timeEl) => ({ time: timeEl, cinemaHall }));
     const session = await Session.create({
-      filmName, filmGenres, filmCountryName, filmId, date, time, price, food,
+      filmName, filmGenres, filmCountryName, filmId, date, time, price, food, cinemaHall: cinemaHallArr,
     });
     const cinema = await Cinema.findOne({ title: cinemaName });
     if (!cinema) {
@@ -44,13 +45,33 @@ export const getFilmSessions = async (req: Request, res: Response) => {
 };
 export const getSessionInfo = async (req: Request, res: Response) => {
   try {
-    const { _id } = req.query;
-    const session = await Session.find({ _id }).populate('cinemaId');
+    const { _id, time } = req.query;
+    const session = await Session.findOne({ _id }).populate('cinemaId');
     if (!session) {
       res.status(400).send('There are no cinemas');
       return;
     }
-    res.status(200).send(session);
+    session.cinemaHall = session.cinemaHall.filter((hall: {time: string}) => hall.time === time);
+    res.status(200).send([session]);
+  } catch (e) {
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
+  }
+};
+export const updateCinemaHall = async (req: Request, res: Response) => {
+  try {
+    const { cinemaHall, sessionId, time } = req.body;
+    const session = await Session.findOne({ _id: sessionId }).populate('cinemaId');
+    if (!session) {
+      res.status(400).send('session');
+      return;
+    }
+    const cinemaHallArr = session.cinemaHall.map((hall : {time: string}) => (hall.time === time ? { ...hall, cinemaHall } : hall));
+    await Session.updateOne({ _id: sessionId }, { cinemaHall: cinemaHallArr });
+    await session.save();
+    const updatedSession = await Session.findOne({ _id: sessionId }).populate('cinemaId');
+    updatedSession.cinemaHall = updatedSession.cinemaHall.filter((hall: {time: string}) => hall.time === time);
+    res.status(200).send([updatedSession]);
   } catch (e) {
     const msg = (e as Error).message;
     res.status(500).send(msg);
