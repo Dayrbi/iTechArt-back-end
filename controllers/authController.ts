@@ -66,3 +66,17 @@ export const authUser = async (req: Request, res: Response): Promise<void> => {
     res.status(500).send(msg);
   }
 };
+export const getUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.query;
+    const user = await User.findOne({ _id: id }).populate('orders');
+    if (!user) {
+      res.status(400).send('User doesn\'t exist');
+      return;
+    }
+    res.status(200).send(user);
+  } catch (e) {
+    const msg = (e as Error).message;
+    res.status(500).send(msg);
+  }
+};
